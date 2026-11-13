@@ -2,11 +2,17 @@ from typing import Dict
 
 import numpy as np
 from fastapi import FastAPI, HTTPException
+from fastapi.responses import RedirectResponse
 from pydantic import BaseModel, Field
 
 from .core import FEATURES, active, append_feedback, monitor
 
 app = FastAPI(title="ModelGuard API", version="1.0.0", description="Prediction, feedback, and model monitoring")
+
+
+@app.get("/", include_in_schema=False)
+def home():
+    return RedirectResponse(url="/docs")
 
 
 class PredictionRequest(BaseModel):

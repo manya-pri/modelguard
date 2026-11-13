@@ -19,7 +19,7 @@ from sklearn.preprocessing import StandardScaler
 
 FEATURES = list(load_breast_cancer().feature_names)
 TARGET = "target"
-ARTIFACTS = Path(os.getenv("MODEL_GUARD_ARTIFACTS", "artifacts"))
+ARTIFACTS = Path(os.getenv("MODEL_GUARD_ARTIFACTS", "/tmp/modelguard" if os.getenv("VERCEL") else "artifacts"))
 REFERENCE_PATH = ARTIFACTS / "reference.csv"
 FEEDBACK_PATH = ARTIFACTS / "feedback.csv"
 ACTIVE_PATH = ARTIFACTS / "active.json"
