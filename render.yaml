@@ -1,0 +1,32 @@
+services:
+  - type: web
+    name: modelguard-api
+    runtime: python
+    plan: starter
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn modelguard.api:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    envVars:
+      - key: MODEL_GUARD_ARTIFACTS
+        value: /var/data
+      - key: PYTHON_VERSION
+        value: 3.12.10
+    disk:
+      name: modelguard-data
+      mountPath: /var/data
+      sizeGB: 1
+
+  - type: web
+    name: modelguard-dashboard
+    runtime: python
+    plan: starter
+    buildCommand: pip install -r requirements.txt
+    startCommand: streamlit run dashboard.py --server.address 0.0.0.0 --server.port $PORT --server.headless true
+    envVars:
+      - key: API_URL
+        fromService:
+          type: web
+          name: modelguard-api
+          property: host
+      - key: PYTHON_VERSION
+        value: 3.12.10
