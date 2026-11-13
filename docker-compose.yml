@@ -1,0 +1,11 @@
+services:
+  modelguard:
+    build: .
+    container_name: modelguard
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data:/app/data
+      - ./models:/app/models
+      - ./reports:/app/reports
+    restart: unless-stopped

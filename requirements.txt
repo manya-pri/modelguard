@@ -1,0 +1,15 @@
+numpy
+pandas<3
+scikit-learn
+joblib
+fastapi
+uvicorn
+pydantic
+mlflow
+evidently==0.4.40
+streamlit
+plotly
+pyarrow==17.0.0
+pytest
+httpx
+scipy
