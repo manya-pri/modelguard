@@ -1,8 +1,8 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Query
 
 from app.schemas import PredictionRequest, PredictionResponse
 from src.predict import predict
-from src.monitoring import log_prediction
+from src.monitoring import log_prediction, run_monitoring
 
 router = APIRouter()
 
@@ -24,6 +24,21 @@ def make_prediction(request: PredictionRequest):
         )
 
         return result
+
+    except FileNotFoundError as error:
+        raise HTTPException(status_code=503, detail=str(error))
+
+    except ValueError as error:
+        raise HTTPException(status_code=400, detail=str(error))
+
+    except Exception as error:
+        raise HTTPException(status_code=500, detail=str(error))
+
+
+@router.post("/monitor")
+def monitor(min_rows: int = Query(default=20, ge=1)):
+    try:
+        return run_monitoring(min_rows)
 
     except FileNotFoundError as error:
         raise HTTPException(status_code=503, detail=str(error))

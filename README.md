@@ -58,6 +58,12 @@ Drift detection compares `data/training_data.csv` with feature columns in
 `reports/drift_report.html`; the dashboard refreshes these reports when it
 runs. At least two non-missing observations per feature are required.
 
+The API also exposes `POST /api/monitor?min_rows=20`. It reports validation
+accuracy on the held-out training split and checks prediction history for
+drift. If prediction history is missing or below `min_rows`, the endpoint
+returns an `insufficient_data` status while still reporting validation
+accuracy.
+
 Run tests:
 
 pytest -v
